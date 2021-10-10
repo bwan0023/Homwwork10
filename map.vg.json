@@ -1,0 +1,52 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Where did Australia Import in 2019",
+    "width": 800,
+    "height": 500,
+    "data": {
+      "url": "https://raw.githubusercontent.com/bwan0023/3179-homework9/main/theworldmap.geo.json",
+      "format": {"type": "topojson", "feature": "worldmap.geo"}
+    },
+    "projection": {"type": "equirectangular"},
+    "layer":[
+      {
+        "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"},
+        "encoding": {
+          "tooltip": {
+            "field": "properties.name"
+          }
+        }
+      },
+      {
+        "transform": [
+          {
+            "lookup": "properties.name",
+            "from": {
+              "data": {
+                "url": "https://raw.githubusercontent.com/bwan0023/3179-homework9/main/Australia_import_2019_.csv"
+              },
+              "key": "Country",
+              "fields": ["Import"]
+            }
+          }
+        ],
+        "mark": {"type": "geoshape"},
+        "encoding": {
+          "color": {
+            "field": "Import",
+            "type": "quantitative",
+            "scale":{
+              "type":"threshold",
+              "domain": [1000000,100000000,1000000000,10000000000],
+              "range":["#78c8ff","#008dee","#005e9f","#004778","#003051"]
+            },
+            "legend":{"format":".1e"}
+            },
+          "tooltip": [
+            {"field": "properties.name", "type": "nominal", "title": "Country"},
+            {"field": "Import", "type": "quantitative","format":","}
+          ]
+        }
+      }
+    ]
+  }
