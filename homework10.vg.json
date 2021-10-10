@@ -1,0 +1,156 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 600,
+    "height": 300,
+    "title": "What did Australia import between 1995 and 2019",
+    "data": {
+      "url": "https://raw.githubusercontent.com/bwan0023/Homwwork10/main/homework.csv"
+    },
+    "params": [
+      {
+        "name": "Year_selection",
+        "value": 2019,
+        "bind": {
+          "input": "range",
+          "min": 1995,
+          "max": 2019,
+          "step": 1,
+          "name": "Year selection"
+        }
+      },
+      {
+        "name": "Sector_selection",
+        "bind": {
+          "input": "select",
+          "options": [
+            null,
+            "Agriculture",
+            "Chemicals",
+            "Electronics",
+            "Machinery",
+            "Metals",
+            "Minerals",
+            "Other",
+            "Services",
+            "Stone",
+            "Textiles",
+            "Vehicles"
+          ],
+          "labels": [
+            "Show All",
+            "Agriculture",
+            "Chemicals",
+            "Electronics",
+            "Machinery",
+            "Metals",
+            "Minerals",
+            "Other",
+            "Services",
+            "Stone",
+            "Textiles",
+            "Vehicles"
+          ],
+          "name": "Sector Selection: "
+        }
+      }
+    ],
+    "transform": [
+      {"filter": "datum.Year <= Year_selection"},
+      {"filter": "Sector_selection == null || datum.Sector == Sector_selection"}
+    ],
+    "encoding": {
+      "x": {"field": "Year", "axis": {"title": "Year", "labelAngle": 0}},
+      "y": {
+        "field": "Current Gross Import",
+        "axis": {"title": "Current Gross Import(billion)"},
+        "type": "quantitative"
+      }
+    },
+    "layer": [
+      {
+        "selection": {
+          "Sector_highlight": {
+            "type": "multi",
+            "fields": ["Sector"],
+            "bind": "legend"
+          }
+        },
+        "mark": {"type": "area", "tooltip": true},
+        "encoding": {
+          "color": {
+            "field": "Sector",
+            "type": "nominal",
+            "scale": {
+              "domain": [
+                "Agriculture",
+                "Chemicals",
+                "Electronics",
+                "Machinery",
+                "Metals",
+                "Minerals",
+                "Other",
+                "Services",
+                "Stone",
+                "Textiles",
+                "Vehicles"
+              ],
+              "range": [
+                "#006666",
+                "#b3003b",
+                "#751aff",
+                "#ff471a",
+                "#00ace6",
+                "#ff1a75",
+                "#b33c00",
+                "#990099",
+                "#009973",
+                "#ffaa80",
+                "#1affff"
+              ]
+            }
+          },
+          "opacity": {
+            "condition": {"selection": "Sector_highlight", "value": 1},
+            "value": 0.2
+          }
+        }
+      },
+      {
+        "mark": "rule",
+        "encoding": {
+          "x": {"datum": 2008},
+          "y":{"datum":300},
+          "color": {"value": "red"},
+          "size": {"value": 3}
+        }
+      },
+      {
+        "mark": {
+            "type": "text",
+            "align": "right",
+            "baseline": "line-top",
+            "dx": -2,
+            "dy": -2,
+            "text": "Financial"
+          },
+       "encoding" : {
+           "x" : {"datum" : 2008},
+           "y" : {"datum":280}
+       }
+      },
+        {
+        "mark": {
+            "type": "text",
+            "align": "right",
+            "baseline": "line-top",
+            "dx": -2,
+            "dy": -2,
+            "text": "crisis"
+          },
+       "encoding" : {
+           "x" : {"datum" : 2008},
+           "y" : {"datum":270}
+       }
+      }
+    ]
+  }
